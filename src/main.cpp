@@ -25,10 +25,12 @@ class $modify(MyInfoLayer, LevelInfoLayer) {
 			geode::utils::string::toLower(level->m_levelName)
 		);
 		if (hasLevel) {
-			auto startPosSprite = CCSprite::createWithSpriteFrameName("edit_eStartPosBtn_001.png");
+			auto startPosSprite = CCSprite::create("startpos-btn.png"_spr);
+			startPosSprite->setScale(0.625);
 			auto btn = CCMenuItemSpriteExtra::create(
-				CircleButtonSprite::create(startPosSprite), this, menu_selector(MyInfoLayer::onStartPos)
+				startPosSprite, this, menu_selector(MyInfoLayer::onStartPos)
 			);
+			btn->setID("startpos-btn"_spr);
 			auto menu = this->getChildByIDRecursive("left-side-menu");
 			menu->addChild(btn);
 			menu->updateLayout();

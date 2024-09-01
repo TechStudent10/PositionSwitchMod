@@ -5,7 +5,10 @@ LevelManager::LevelManager() {
 
     m_listener.bind([this] (web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) {
-            auto _result = res->string().unwrapOr("Uh oh!").substr(47);
+            auto _res = res->string().unwrapOr("Uh oh!");
+            auto index = _res.find("{");
+            if (index == std::string::npos) return;
+            auto _result = _res.substr(index);
             auto result = matjson::parse(_result.substr(0, _result.length() - 2));
             auto rows = result["table"]["rows"].as_array();
             for (auto& row : rows) {
