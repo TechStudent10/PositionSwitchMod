@@ -18,6 +18,10 @@ jobs:
         - name: macOS
           os: macos-latest
 
+        - name: iOS
+          os: macos-latest
+          target: iOS
+
         - name: Android32
           os: ubuntu-latest
           target: Android32
@@ -62,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: hiimjustin000/release-geode-mod@main
+      - uses: hiimjasmine00/release-geode-mod@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
