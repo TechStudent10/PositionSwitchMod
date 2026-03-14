@@ -8,8 +8,8 @@ LevelManager::LevelManager() {
     m_listener.spawn(
         req.get("https://docs.google.com/spreadsheets/d/11J28JcremydDAi6vIcQwKTNa9nfRis8O4soxE7_X5qc/gviz/tq?tqx=out:json&tq&gid=0"),
         [this] (geode::utils::web::WebResponse e) {
-        if (auto res = e) {
-            auto _res = res.string().unwrapOr("Uh oh!");
+        if (e.ok()) {
+            auto _res = e.string().unwrapOr("Uh oh!");
             if (_res == "Uh oh!") return log::info("The request could not be stringified... So sad :(");
 
             auto index = _res.find("{");
