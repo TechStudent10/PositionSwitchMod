@@ -3,9 +3,13 @@
 LevelManager::LevelManager() {
     // fetch and store levels
 
-    m_listener.bind([this] (web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) {
-            auto _res = res->string().unwrapOr("Uh oh!");
+    auto req = web::WebRequest();
+
+    m_listener.spawn(
+        req.get("https://docs.google.com/spreadsheets/d/11J28JcremydDAi6vIcQwKTNa9nfRis8O4soxE7_X5qc/gviz/tq?tqx=out:json&tq&gid=0"),
+        [this] (geode::utils::web::WebResponse e) {
+        if (auto res = e) {
+            auto _res = res.string().unwrapOr("Uh oh!");
             if (_res == "Uh oh!") return log::info("The request could not be stringified... So sad :(");
 
             auto index = _res.find("{");
@@ -46,19 +50,8 @@ LevelManager::LevelManager() {
                 if (levelID.isErr()) return log::info("levelID could not be parded into a string... So sad :(");
                 levels[geode::utils::string::toLower(levelName.unwrap())] = levelID.unwrap();
             }
-            
-        } else if (web::WebProgress* p = e->getProgress()) {
-            // TODO: make this log toggleable
-            // log::info("progress: {}", p->downloadProgress().value_or(0.f));
-        } else if (e->isCancelled()) {
-            // TODO: make this log toggleable
-            log::info("The request was cancelled... So sad :(");
         }
     });
 
-    auto req = web::WebRequest();
-    m_listener.setFilter(
-        req.get("https://docs.google.com/spreadsheets/d/11J28JcremydDAi6vIcQwKTNa9nfRis8O4soxE7_X5qc/gviz/tq?tqx=out:json&tq&gid=0")
-    );
 
 };
