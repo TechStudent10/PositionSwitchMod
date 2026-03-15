@@ -8,7 +8,7 @@ using namespace geode::prelude;
 
 class LevelManager {
 private:
-    EventListener<web::WebTask> m_listener;
+    async::TaskHolder<geode::utils::web::WebResponse> m_listener;
 
     LevelManager();
 
